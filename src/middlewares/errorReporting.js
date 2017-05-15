@@ -3,7 +3,7 @@ module.exports = function(result, req, res, next) {
         var isProduction = process.env.NODE_ENV == 'production';
         res.json({
             success: false,
-            error: isProduction ? 'Error reporting is turned off in productio environment ' : result.message
+            error: isProduction ? 'Error reporting is turned off in production environment ' : result.message
         })
     } else {
         next();
