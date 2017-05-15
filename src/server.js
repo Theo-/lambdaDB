@@ -53,6 +53,9 @@ app.use(function(req, res, next) {
     next(err);
 });
 
+var errorHandler = require('./middlewares/errorReporting');
+app.use(errorHandler);
+
 // Start the server
 app.set('port', process.env.PORT || 3000);
 var server = app.listen(app.get('port'), function() {
