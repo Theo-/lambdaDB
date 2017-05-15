@@ -1,0 +1,29 @@
+{
+  "name": "lambdadb",
+  "version": "1.0.0",
+  "description": "API for SQL",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Theo-/lambdaDB.git"
+  },
+  "author": "Theo Szymkowiak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Theo-/lambdaDB/issues"
+  },
+  "homepage": "https://github.com/Theo-/lambdaDB#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "colors": "^1.1.2",
+    "express": "^4.15.2",
+    "helmet": "^3.6.0",
+    "morgan": "^1.8.1",
+    "mysql": "^2.13.0",
+    "q": "^1.5.0"
+  }
+}
