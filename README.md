@@ -1,7 +1,7 @@
 # LambdaDB
 
 LambdaDB is a standalone Express Server that sits on top of your database. It makes your database Lambda ready by managing the connection pool and
-exposing a secure API.
+exposing a *secure API*.
 
 Supported databases:
 - MySQL
@@ -30,7 +30,7 @@ module.exports = function(environment) {
         password: "database_password",
         username: "database_username",
         database: "database_name",
-        port: <optional>
+        port: 3306,
         secretToken: "secretToken"
     }
 }
@@ -38,5 +38,35 @@ module.exports = function(environment) {
 
 Remark that the `environment` is passed to the function so you can easily modify those credentials at running time. One use case would be to swap credentials when in a testing environment.
 
+The `secretToken` is used to authenticate the request to the LambdaDB server.
+
+## Authentication
+
+We don't want everybody to have access to this server, that's why we use a `secretToken`. This `secretToken` should be passed through a `X-Access-Token` header for *every* request;
+
 ## API
 
+```
+POST /
+```
+
+Body:
+```
+{
+    query: "SELECT * FROM users"
+}
+```
+
+Results:
+```
+{
+  "success": true,
+  "data": [
+    {
+        firstName: "",
+        ....
+    },
+    ...
+  ]
+}
+```

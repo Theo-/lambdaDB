@@ -1,4 +1,5 @@
 var pool = require('./../db.js');
+var response = require('./response.js');
 
 module.exports = {
     parse: function(req, res, next) {
@@ -8,7 +9,7 @@ module.exports = {
                     if(err) {
                         return next(err);
                     }
-                    res.json(rows);
+                    res.json(response.format(rows));
             });
         }, next);
     }
