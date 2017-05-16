@@ -1,6 +1,6 @@
 # LambdaDB
 
-[![Build Status](https://travis-ci.org/Theo-/lambdaDB.svg?branch=master)]
+![Build Status](https://travis-ci.org/Theo-/lambdaDB.svg?branch=master)
 
 LambdaDB is a standalone Express Server that sits on top of your database. It makes your database Lambda ready by managing the connection pool and
 exposing a *secure API*.
