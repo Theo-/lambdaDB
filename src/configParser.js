@@ -12,10 +12,6 @@ module.exports = function() {
         throw new Error('Database ' + colors.green('user') + ' must be set in config.js');
     }
 
-    if(!config.password) {
-        throw new Error('Username ' + colors.green('password') + ' be set in config.js');
-    }
-
     if(!config.host) {
         throw new Error('Database ' + colors.green('host') + ' must be set in config.js');
     }
