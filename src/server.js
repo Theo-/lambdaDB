@@ -6,7 +6,7 @@ var express = require('express'),
     configParser = require('./configParser.js'),
     pool = require('./db.js');
 
-var config = configParser(process.env.NODE_ENV);
+var config = configParser();
 
 var app = express();
 
