@@ -1,0 +1,18 @@
+language: node_js
+cache:
+  bundler: true
+  directories:
+  - node_modules # NPM packages
+sudo: false
+env:
+node_js:
+- '6'
+services:
+- mysql
+install:
+- npm install
+- npm install --dev
+before_script:
+- mysql -e 'create database lambdadb_test;'
+script:
+- NODE_ENV='travis' npm test
