@@ -1,6 +1,7 @@
 module.exports = function(environment) {
     return {
         connectionLimit: 20,
+        // Default database to execute queries on
         database: process.env.MYSQL_DATABASE,
         user: process.env.MYSQL_USER,
         port: process.env.MYSQL_PORT,

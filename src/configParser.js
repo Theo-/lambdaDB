@@ -5,7 +5,7 @@ module.exports = function() {
     var config = configFunction(process.env.NODE_ENV);
 
     if(!config.database) {
-        throw new Error(colors.green('Database name') + ' must be set in config.js');
+        console.log(colors.orange('Warning: ') + colors.green('Database name') + ' is not set in config.js');
     }
 
     if(!config.user) {
