@@ -1,4 +1,4 @@
-var pool = require('./../db.js'),
+var pool = require('./../pools.js').getMaster(),
     response = require('./response.js'),
     _ = require('underscore');
 

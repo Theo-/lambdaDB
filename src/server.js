@@ -4,7 +4,7 @@ var express = require('express'),
     helmet = require('helmet'),
     colors = require('colors'),
     configParser = require('./configParser.js'),
-    pool = require('./db.js');
+    pool = require('./pools.js').getMaster();
 
 var config = configParser();
 

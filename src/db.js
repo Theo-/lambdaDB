@@ -2,13 +2,11 @@ var mysql = require('mysql');
 var q = require('q');
 var configParser = require('./configParser.js');
 
-var mysqlConfig = configParser();
-
-function Connection() {
+var Connection = function(_mysqlConfig) {
     this.pool = null;
 
     this.init = function() {
-        this.pool = mysql.createPool(mysqlConfig);
+        this.pool = mysql.createPool(_mysqlConfig);
     }.bind(this);
 
     this.acquire = function(callback, attemp) {
@@ -53,4 +51,4 @@ function Connection() {
     this.init();
 }
 
-module.exports = new Connection();
+module.exports = Connection;
