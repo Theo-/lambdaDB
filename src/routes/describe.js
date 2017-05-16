@@ -10,11 +10,10 @@ module.exports = {
                 function(err, rows) {
                     connection.release();
 
-                    if(err.message.startsWith('ER_NO_SUCH_TABLE')) {
-                        return next(new Error('Table \''+tableName+'\' could not be found.'));
-                    }
-
                     if(err) {
+                        if(err.message.startsWith('ER_NO_SUCH_TABLE')) {
+                            return next(new Error('Table \''+tableName+'\' could not be found.'));
+                        }
                         return next(err);
                     }
                     res.json(response.format(rows));

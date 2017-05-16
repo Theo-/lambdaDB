@@ -40,6 +40,16 @@ Remark that the `environment` is passed to the function so you can easily modify
 
 The `secretToken` is used to authenticate the request to the LambdaDB server.
 
+- 4. Start the server
+
+```
+npm start
+```
+
+- 5. Use the LambdaDB npm package to access your database.
+
+You can find the documentation at [the LambdaDB client repository](https://github.com/Theo-/lambdaDB-client).
+
 ## Authentication
 
 We don't want everybody to have access to this server, that's why we use a `secretToken`. This `secretToken` should be passed through a `X-Access-Token` header for *every* request;
