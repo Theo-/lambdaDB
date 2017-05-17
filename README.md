@@ -92,7 +92,7 @@ Example:
 }
 ``` 
 
-You can check the [`lambdadb_config` database template](templates/lambdadb_config.json).
+You can check the [`lambdadb_config` database template](databases/lambdadb_config.json).
 
 ## API
 
