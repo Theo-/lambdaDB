@@ -4,7 +4,7 @@ var express = require('express'),
     helmet = require('helmet'),
     colors = require('colors'),
     configParser = require('./configParser.js'),
-    pool = require('./pools.js').getMaster();
+    pools = require('./pools.js');
 
 var config = configParser();
 
@@ -42,6 +42,9 @@ app.use(function(req, res, next) {
         console.log(req.headers);
         next(new Error('Unauthorized Access'));
     }
+
+    // Assign pool to the request
+    req.pool = pools.getForToken(req.headers['x-access-token']);
     next();
 })
 app.use('/', require('./routes'));
@@ -65,7 +68,7 @@ var server = app.listen(app.get('port'), function() {
 // Keep the database connection
 // alive
 function keepAlive() {
-    pool.acquire(function(err, connection) {
+    pools.getMaster().acquire(function(err, connection) {
         if (err) { return console.log(err); }
         connection.ping();
         connection.release();

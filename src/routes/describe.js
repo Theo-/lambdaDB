@@ -1,11 +1,10 @@
-var pool = require('./../pools.js').getMaster();
 var response = require('./response.js');
 
 module.exports = {
     table: function(req, res, next) {
         var tableName = req.params.table;
 
-        pool.getConnection().then(function(connection) {
+        req.pool.getConnection().then(function(connection) {
             connection.query("SHOW COLUMNS FROM "+tableName, [],
                 function(err, rows) {
                     connection.release();
@@ -22,7 +21,7 @@ module.exports = {
     },
 
     tables: function(req, res, next) {
-        pool.getConnection().then(function(connection) {
+        req.pool.getConnection().then(function(connection) {
             connection.query("SHOW TABLES", [],
                 function(err, rows) {
                     connection.release();

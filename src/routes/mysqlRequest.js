@@ -1,5 +1,4 @@
-var pool = require('./../pools.js').getMaster(),
-    response = require('./response.js'),
+var response = require('./response.js'),
     _ = require('underscore');
 
 module.exports = {
@@ -11,7 +10,7 @@ module.exports = {
         var queryResults = [];
         function makeRequest(query) {
             return new Promise(function(resolve, reject) {
-                pool.getConnection().then(function(connection) {
+                req.pool.getConnection().then(function(connection) {
                     connection.query(query, [],
                         function(err, rows) {
                             connection.release();
