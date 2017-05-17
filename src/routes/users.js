@@ -29,6 +29,41 @@ var Users = {
         }, next);
     },
 
+    logIn: function(req, res, next) {
+        var username = req.body.username;
+        var password = req.body.password;
+
+        pool.getConnection().then(function(connection) {
+            connection.query(
+                'SELECT * FROM lambdadb_config.users WHERE username=?',
+                [
+                    username
+                ],
+                function(err, rows) {
+                    connection.release();
+
+                    if(err) {
+                        return next(err);
+                    }
+
+                    if(rows.length != 1) {
+                        return next(new Error('Unauthorized'));
+                    }
+
+                    var userData = rows[0];
+                    var same = bcrypt.compareSync(password, userData.password);
+
+                    if(same) {
+                        delete userData.password;
+                        res.json(response.format(userData));
+                    } else {
+                        next(new Error('Unauthorized'));
+                    }
+                }
+            )
+        })
+    },
+
     create: function(req, res, next) {
         // Hash password
         bcrypt.hash(req.body.password, null, null, function(err, hash) {

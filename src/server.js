@@ -37,6 +37,11 @@ app.all('/*', function(req, res, next) {
 
 // API routes
 app.use(function(req, res, next) {
+    if(req.originalUrl == '/users/login') {
+        req.master = null;
+        return next();
+    }
+
     // If the X-Access-Token is empty or different than
     // the secret token
     if(req.headers['x-access-token'] != config.secretToken) {
