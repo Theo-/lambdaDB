@@ -56,6 +56,14 @@ You can find the documentation at [the LambdaDB client repository](https://githu
 
 We don't want everybody to have access to this server, that's why we use a `secretToken`. This `secretToken` should be passed through a `X-Access-Token` header for *every* request;
 
+#### Users
+
+Users are optional, they allow multiple users to connect to the LambdaDB server with different permission. One use case would be to restrict access of users to their own databases.
+
+LambdaDB users map to SQL users. However, in order to use users, LambdaDB must have root access.
+
+LambdaDB will also create a `lambdadb_config` database to manage users.
+
 ## API
 
 ```

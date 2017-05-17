@@ -1,0 +1,38 @@
+{
+    "description": "This is a template for the database lambdadb_config that contains the user information",
+    "name": "lambdadb_config",
+    "type": "database",
+    "tables": [
+        {
+            "name": "users",
+            "description": "Contains all the users of the lambda server",
+            "columns": [
+                {
+                    "name": "uid",
+                    "type": "BIGINT",
+                    "auto_increment": true
+                },
+                {
+                    "name": "username",
+                    "type": "VARCHAR(600)"
+                },
+                {
+                    "name": "password",
+                    "type": "VARCHAR(600)"
+                },
+                {
+                    "name": "sql_role",
+                    "type": "VARCHAR(600)"
+                },
+                {
+                    "name": "timeCreated",
+                    "type": "BIGINT"
+                },
+                {
+                    "name": "timeUpdated",
+                    "type": "BIGINT"
+                }
+            ]
+        }
+    ]
+}
