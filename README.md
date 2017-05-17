@@ -54,11 +54,11 @@ npm start
 
 - 5. Use the LambdaDB npm package to access your database.
 
-You can find the documentation at [the LambdaDB client repository](https://github.com/Theo-/lambdaDB-client).
+You can find the documentation in [the LambdaDB client repository](https://github.com/Theo-/lambdaDB-client).
 
 ## Authentication
 
-We don't want everybody to have access to this server, that's why we use a `secretToken`. This `secretToken` should be passed through a `X-Access-Token` header for *every* request;
+We don't want everybody to have access to this server, that's why LambdaDB uses a `secretToken` (set in the configuration file). This `secretToken` must be passed through a `X-Access-Token` header for *every* request.
 
 #### Users
 
