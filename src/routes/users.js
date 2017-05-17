@@ -27,6 +27,10 @@ var Users = {
     create: function(req, res, next) {
         // Hash password
         bcrypt.hash(req.body.password, salt, null, function(err, hash) {
+            if(err) {
+                throw err;
+            }
+
             pool.getConnection().then(function(connection) {
                 var time = (new Date()).getTime();
                 var sql_password = crypto.randomBytes(64).toString('hex');
