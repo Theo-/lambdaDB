@@ -14,7 +14,8 @@
                 },
                 {
                     "name": "username",
-                    "type": "VARCHAR(600)"
+                    "unique": true,
+                    "type": "VARCHAR(100)"
                 },
                 {
                     "name": "password",
@@ -23,6 +24,39 @@
                 {
                     "name": "sql_role",
                     "type": "VARCHAR(600)"
+                },
+                {
+                    "name": "sql_password",
+                    "type": "VARCHAR(600)"
+                },
+                {
+                    "name": "secretToken",
+                    "type": "VARCHAR(600)"
+                },
+                {
+                    "name": "timeCreated",
+                    "type": "BIGINT"
+                },
+                {
+                    "name": "timeUpdated",
+                    "type": "BIGINT"
+                }
+            ]
+        },
+        {
+            "name": "users_databases",
+            "description": "Describe user access to the databases",
+            "columns": [
+                {
+                    "name": "database_name",
+                    "primary": true,
+                    "unique": true,
+                    "type": "VARCHAR(200)"
+                },
+                {
+                    "name": "uid",
+                    "type": "BIGINT",
+                    "primary": true
                 },
                 {
                     "name": "timeCreated",

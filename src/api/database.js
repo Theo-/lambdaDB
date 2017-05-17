@@ -13,9 +13,10 @@ module.exports = function(databaseName, _pool) {
                 connection.query(
                     'CREATE DATABASE IF NOT EXISTS ' + databaseName, [], 
                     function(err, result) {
+                        connection.release();
                         if(err) {
                             return reject(err);
-                        } 
+                        }   
                         resolve(result);
                     }
                 )
@@ -32,6 +33,7 @@ module.exports = function(databaseName, _pool) {
                 connection.query(
                     'SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = \'' + databaseName + '\'', [], 
                     function(err, result) {
+                        connection.release();
                         if(err || !result.SCHEMA_NAME) {
                             return reject(err);
                         } 

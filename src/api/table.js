@@ -10,10 +10,11 @@ module.exports = function(tableName, _pool) {
 
             var columns = _.reduce(fields, function(memo, field) {
                 var AUTO_INCREMENT = field.auto_increment ? ' AUTO_INCREMENT' : '';
+                var UNIQUE = field.unique ? ' UNIQUE' : '';
                 if(field.auto_increment || field.primary) {
                     primary_keys.push(field.name);
                 }
-                return memo + field.name + ' ' + field.type + AUTO_INCREMENT + ',\n'
+                return memo + field.name + ' ' + field.type + AUTO_INCREMENT + UNIQUE + ',\n'
             }, "");
 
             columns = columns.slice(0, -2); // remove last \n and ,
@@ -31,9 +32,10 @@ module.exports = function(tableName, _pool) {
 
             pool.getConnection().then(function(connection) {
                 var params = columns + primary_keys_string;
-
+                
                 connection.query(
                     'CREATE TABLE IF NOT EXISTS ' + tableName + '('+ params +')', [], function(err, result) {
+                        connection.release();
                         if(err) {
                             return reject(err);
                         } 
