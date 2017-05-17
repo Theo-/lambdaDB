@@ -7,7 +7,7 @@ program
 
 program.parse(process.argv);
 
-console.log('  - %s cheese', program.template);
+console.log('Importing %s', program.template);
 
 templateEngine.parseFile(program.template).then(function() {
     console.log('DONE');
