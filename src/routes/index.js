@@ -18,4 +18,7 @@ var database = require('./database.js');
 router.post('/database/new', database.create);
 router.get('/database', database.get);
 
+var template = require('./template.js');
+router.post('/database/template', template.parse);
+
 module.exports = router;
