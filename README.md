@@ -62,11 +62,11 @@ We don't want everybody to have access to this server, that's why we use a `secr
 
 #### Users
 
-Users are optional, they allow multiple users to connect to the LambdaDB server with different permission. One use case would be to restrict access of users to their own databases.
+Users are optional, they allow multiple users to connect to the LambdaDB server with different set of permissions. One use case would be to restrict access of users to their own databases.
 
-LambdaDB users map to SQL users. However, in order to use users, LambdaDB must have root access.
+LambdaDB users map to SQL users. Therefore, in order to enable users, LambdaDB must have root access.
 
-LambdaDB will also create a `lambdadb_config` database to manage users with the template `databases/lambdadb_config.json`.
+LambdaDB will create a `lambdadb_config` database to manage users with the template `databases/lambdadb_config.json`.
 
 ## Templates
 
@@ -91,6 +91,8 @@ Example:
     ]
 }
 ``` 
+
+You can check the [`lambdadb_config` database template](templates/lambdadb_config.json).
 
 ## API
 
