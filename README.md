@@ -33,7 +33,11 @@ module.exports = function(environment) {
         username: "database_username",
         database: "database_name",
         port: 3306,
-        secretToken: "secretToken"
+        secretToken: "secretToken",
+        // Enable users, will create a lambdadb_config
+        // database following the format in 
+        // databases/lambdadb_config.json
+        enableUsers: true
     }
 }
 ```
@@ -62,7 +66,31 @@ Users are optional, they allow multiple users to connect to the LambdaDB server 
 
 LambdaDB users map to SQL users. However, in order to use users, LambdaDB must have root access.
 
-LambdaDB will also create a `lambdadb_config` database to manage users.
+LambdaDB will also create a `lambdadb_config` database to manage users with the template `databases/lambdadb_config.json`.
+
+## Templates
+
+LambdaDB has a built-in template parsing engine that allows easy reproducibility of databases and tables.
+
+Example:
+```json
+{
+    "name": "Example database",
+    "type": "database",
+    "tables": [
+        {
+            "name": "users",
+            "columns": [
+                {
+                    "name": "uid",
+                    "type": "BIGINT",
+                    "auto_increment": true
+                }
+            ]
+        }
+    ]
+}
+``` 
 
 ## API
 

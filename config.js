@@ -11,6 +11,6 @@ module.exports = function(environment) {
         // Enable users, will create a lambdadb_config
         // database following the format in 
         // databases/lambdadb_config.json
-        authorizeUsers: false
+        enableUsers: true
     }
 }

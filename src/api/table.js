@@ -33,7 +33,7 @@ module.exports = function(tableName, _pool) {
                 var params = columns + primary_keys_string;
 
                 connection.query(
-                    'CREATE TABLE ' + tableName + '('+ params +')', [], function(err, result) {
+                    'CREATE TABLE IF NOT EXISTS ' + tableName + '('+ params +')', [], function(err, result) {
                         if(err) {
                             return reject(err);
                         } 

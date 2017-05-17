@@ -65,6 +65,12 @@ var server = app.listen(app.get('port'), function() {
     console.log(colors.green('LambdaDB') + ' Server listening on port ' + server.address().port);
 });
 
+if(config.enableUsers) {
+    // Import lambdadb_config database
+    var templateEngine = require('./template/templateEngine');
+    templateEngine.parseFile('databases/lambdadb_config.json');
+}
+
 // Keep the database connection
 // alive
 function keepAlive() {

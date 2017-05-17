@@ -4,12 +4,35 @@ var masterPool = require('./../pools').getMaster(),
 module.exports = function(databaseName, _pool) {
     var pool = _pool || masterPool;
 
+    /**
+     * Creates the database.
+     */
     this.create = function() {
         return new Promise(function(resolve, reject) {
             pool.getConnection().then(function(connection) {
                 connection.query(
-                    'CREATE DATABASE ' + databaseName, [], function(err, result) {
+                    'CREATE DATABASE IF NOT EXISTS ' + databaseName, [], 
+                    function(err, result) {
                         if(err) {
+                            return reject(err);
+                        } 
+                        resolve(result);
+                    }
+                )
+            }, reject)
+        });
+    }
+
+    /**
+     * Check if the database exists.
+     */
+    this.exists = function() {
+        return new Promise(function(resolve, reject) {
+            pool.getConnection().then(function(connection) {
+                connection.query(
+                    'SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = \'' + databaseName + '\'', [], 
+                    function(err, result) {
+                        if(err || !result.SCHEMA_NAME) {
                             return reject(err);
                         } 
                         resolve(result);
