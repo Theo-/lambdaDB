@@ -1,5 +1,6 @@
 var masterPool = require('./../pools').getMaster(),
-    table = require('./table.js');
+    table = require('./table.js'),
+    logger = require('./../logger.js');
 
 module.exports = function(databaseName, _pool) {
     var pool = _pool || masterPool;
@@ -10,6 +11,7 @@ module.exports = function(databaseName, _pool) {
     this.create = function() {
         return new Promise(function(resolve, reject) {
             pool.getConnection().then(function(connection) {
+                logger('Creating database ' + databaseName);
                 connection.query(
                     'CREATE DATABASE IF NOT EXISTS ' + databaseName, [], 
                     function(err, result) {

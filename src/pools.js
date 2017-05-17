@@ -1,5 +1,6 @@
 var dbConnection = require('./db.js'),
-    configParser = require('./configParser.js');
+    configParser = require('./configParser.js'),
+    users = require('./users.js');
 
 var masterConfig = configParser();
 
@@ -33,7 +34,17 @@ var Pools = {
         }
 
         if(!Pools.pools[secretToken]) {
-            throw new Error('Pool does not exist for this key');
+            if(!!users.cache[secretToken]) {
+                var user = users.cache[secretToken];
+                var basicConfig = configParser();
+                basicConfig.user = user.sql_role;
+                basicConfig.password = user.sql_password;
+                basicConfig.database = 'lr_theo';
+                var userPool = new dbConnection(basicConfig);
+                Pools.pools[secretToken] = userPool;
+            } else {
+                throw new Error('Pool does not exist for this key');
+            }
         }
 
         return Pools.pools[secretToken];

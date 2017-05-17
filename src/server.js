@@ -4,7 +4,8 @@ var express = require('express'),
     helmet = require('helmet'),
     colors = require('colors'),
     configParser = require('./configParser.js'),
-    pools = require('./pools.js');
+    pools = require('./pools.js'),
+    users = require('./users.js');
 
 var config = configParser();
 
@@ -39,13 +40,26 @@ app.use(function(req, res, next) {
     // If the X-Access-Token is empty or different than
     // the secret token
     if(req.headers['x-access-token'] != config.secretToken) {
-        console.log(req.headers);
-        next(new Error('Unauthorized Access'));
+        // Search for user
+        var token = req.headers['x-access-token'];
+        users.getForToken(token).then(function(userData) {
+            req.user = userData;
+            req.master = false;
+
+            // Assign pool to the request
+            req.pool = pools.getForToken(token);
+            next();
+        }, function() {
+            next(new Error('Unauthorized Access'));
+        })
     }
 
-    // Assign pool to the request
-    req.pool = pools.getForToken(req.headers['x-access-token']);
-    next();
+    req.master = false;
+    if(req.headers['x-access-token'] == config.secretToken) {
+        req.master = true;
+        req.pool = pools.getForToken(req.headers['x-access-token']);
+        next();
+    }
 })
 app.use('/', require('./routes'));
 
