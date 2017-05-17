@@ -1,6 +1,6 @@
 var pool = require('./../pools.js').getConfigPool(),
-    bcrypt = require('bcrypt'),
-    saltRounds = 15,
+    bcrypt = require('bcrypt-nodejs'),
+    salt = 'lambdadbsalt',
     response = require('./response.js'),
     crypto = require('crypto'),
     userAPI = require('./../api/users.js');
@@ -26,7 +26,7 @@ var Users = {
 
     create: function(req, res, next) {
         // Hash password
-        bcrypt.hash(req.body.password, saltRounds).then(function(hash) {
+        bcrypt.hash(req.body.password, salt, null, function(err, hash) {
             pool.getConnection().then(function(connection) {
                 var time = (new Date()).getTime();
                 var sql_password = crypto.randomBytes(64).toString('hex');

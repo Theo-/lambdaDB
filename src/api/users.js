@@ -16,7 +16,6 @@ module.exports = function(userName, password, _pool) {
                         connection.release();
 
                         if(err) {
-                            console.log(err)
                             return reject(err);
                         }
 
