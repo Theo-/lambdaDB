@@ -66,7 +66,8 @@ var Users = {
 
     create: function(req, res, next) {
         if(!req.master) {
-            throw new Error('Must use the master secret key to create an account');
+            // Allow "public" registering
+            //throw new Error('Must use the master secret key to create an account');
         }
 
         if(!/^[0-9_a-z]+$/.test(req.body.username)) {
