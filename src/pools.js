@@ -52,7 +52,7 @@ var Pools = {
                 var userPool = new dbConnection(basicConfig);
                 Pools.pools[key] = userPool;
             } else {
-                throw new Error('Pool does not exist for the key ' + key);
+                throw new Error('Account does not exist for the key ' + secretToken);
             }
         }
 

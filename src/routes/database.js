@@ -5,8 +5,10 @@ var response = require('./response.js'),
 
 var database = {
     get: function(req, res, next) {
+        console.log('got it 1');
         var sql_role = req.user.sql_role;
 
+    console.log('got it');
         pools.getMaster().getConnection().then(function(connection) {
             connection.query(
                 'SELECT * FROM mysql.db WHERE User=?',

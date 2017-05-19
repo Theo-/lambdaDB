@@ -3,11 +3,6 @@ var response = require('./response.js');
 module.exports = {
     table: function(req, res, next) {
         var tableName = req.params.table;
-        var databaseName = req.user.username + '_' + req.params.database;
-
-        if(!!databaseName) {
-            tableName = databaseName + '.' + tableName;
-        }
 
         req.pool.getConnection().then(function(connection) {
             connection.query("SHOW COLUMNS FROM "+tableName, [],
@@ -26,15 +21,8 @@ module.exports = {
     },
 
     tables: function(req, res, next) {
-        var databaseName = req.params.database;
-        var fromDatabase = '';
-
-        if(!!databaseName) {
-            fromDatabase = ' IN ' + databaseName;
-        }
-
         req.pool.getConnection().then(function(connection) {
-            connection.query("SHOW TABLES" + fromDatabase, [],
+            connection.query("SHOW TABLES", [],
                 function(err, rows) {
                     connection.release();
 

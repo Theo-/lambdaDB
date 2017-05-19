@@ -35,42 +35,66 @@ app.all('/*', function(req, res, next) {
     }
 });
 
-// API routes
+/**
+ * Administration routes for the user.
+ * No pool is attached here since no database
+ * is specified.
+ */
+app.use('/me/*', function(req, res, next) {
+    var secretToken = req.headers['x-access-token'];
+    if(!secretToken) {
+        return next(new Error('Secret token needed'));
+    }
+
+    users.getForToken(secretToken).then(function(userData) {
+        req.user = userData;
+        req.master = false;
+        next();
+    }, function() {
+        next(new Error('Unauthorized Access'));
+    })
+});
+
+/**
+ * Database access for a certain user.
+ * X-Database-Name must be specified here.
+ */
+app.use('/db/*', function(req, res, next) {
+    var secretToken = req.headers['x-access-token'];
+    var databaseName = req.headers['x-database-name'];
+    if(!secretToken) {
+        return next(new Error('Secret token must be specified using X-Access-Token header.'));
+    }
+
+    if(!databaseName) {
+        return next(new Error('Database name must be specified using X-Database-Name header.'))
+    }
+
+    // Search for user
+    users.getForToken(secretToken).then(function(userData) {
+        req.user = userData;
+        req.master = false;
+
+        // Assign pool to the request
+        req.pool = pools.getForToken(secretToken, databaseName);
+        next();
+    }, function() {
+        next(new Error('Unauthorized Access'));
+    })
+});
+
+// API routes for master access
 app.use(function(req, res, next) {
-    if(req.originalUrl == '/users/login') {
-        req.master = null;
-        return next();
-    }
-
-    // If the X-Access-Token is empty or different than
-    // the secret token
-    if(req.headers['x-access-token'] != config.secretToken) {
-        var databaseName = req.headers['x-database-name'];
-        if(!databaseName) {
-            return next(new Error('You must specify a database name using the header X-Database-Name.'))
-        }
-
-        // Search for user
-        var token = req.headers['x-access-token'];
-        users.getForToken(token).then(function(userData) {
-            req.user = userData;
-            req.master = false;
-
-            // Assign pool to the request
-            req.pool = pools.getForToken(token, databaseName);
-            next();
-        }, function() {
-            next(new Error('Unauthorized Access'));
-        })
-    }
-
     req.master = false;
     if(req.headers['x-access-token'] == config.secretToken) {
         req.master = true;
         req.pool = pools.getForToken(req.headers['x-access-token']);
         next();
+    } else {
+        next();
     }
 })
+
 app.use('/', require('./routes'));
 
 // If no route is matched by now, it must be a 404
