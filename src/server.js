@@ -40,7 +40,7 @@ app.all('/*', function(req, res, next) {
  * No pool is attached here since no database
  * is specified.
  */
-app.use('/me/*', function(req, res, next) {
+app.use('/me*', function(req, res, next) {
     var secretToken = req.headers['x-access-token'];
     if(!secretToken) {
         return next(new Error('Secret token needed'));
@@ -59,7 +59,7 @@ app.use('/me/*', function(req, res, next) {
  * Database access for a certain user.
  * X-Database-Name must be specified here.
  */
-app.use('/db/*', function(req, res, next) {
+app.use('/db*', function(req, res, next) {
     var secretToken = req.headers['x-access-token'];
     var databaseName = req.headers['x-database-name'];
     if(!secretToken) {

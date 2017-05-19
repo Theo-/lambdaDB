@@ -11,6 +11,7 @@ router.get('/db/describe/:table', describe.table);
 var users = require('./users.js');
 router.post('/users', users.create);
 router.get('/users', users.get);
+router.get('/me', users.me);
 router.post('/users/login', users.logIn);
 
 var database = require('./database.js');

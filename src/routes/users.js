@@ -29,6 +29,11 @@ var Users = {
         }, next);
     },
 
+    me: function(req, res, next) {
+        delete req.user.password;
+        res.json(response.format(req.user));
+    },
+
     logIn: function(req, res, next) {
         var username = req.body.username;
         var password = req.body.password;
