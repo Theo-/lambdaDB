@@ -65,6 +65,18 @@ var Users = {
     },
 
     create: function(req, res, next) {
+        if(!req.master) {
+            throw new Error('Must use the master secret key to create an account');
+        }
+
+        if(!/^[0-9_a-z]+$/.test(req.body.username)) {
+            throw new Error('Username can only contain letters and number');
+        }
+
+        if(req.body.password.length < 4) {
+            throw new Error('Password must be at least 4 characters');
+        }
+
         // Hash password
         bcrypt.hash(req.body.password, null, null, function(err, hash) {
             if(err) {
