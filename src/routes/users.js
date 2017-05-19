@@ -31,6 +31,7 @@ var Users = {
 
     me: function(req, res, next) {
         delete req.user.password;
+        req.user.sql_server = process.env.MYSQL_HOST + ':' + process.env.MYSQL_PORT;
         res.json(response.format(req.user));
     },
 
