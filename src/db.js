@@ -6,11 +6,18 @@ var Connection = function(_mysqlConfig) {
     this.pool = null;
 
     this.init = function() {
+        this.initialized = false;
         this.pool = mysql.createPool(_mysqlConfig);
     }.bind(this);
 
     this.acquire = function(callback, attemp) {
         attemp = attemp || 0;
+
+        if(attemp > 10) {
+            this.initialized = false;
+            callback(new Error('Could not connect to database'), null);
+            return;
+        }
 
         this.pool.getConnection(function(err, connection) {
             /* istanbul ignore if */
@@ -23,6 +30,7 @@ var Connection = function(_mysqlConfig) {
 
                 this.acquire(callback, attemp + 1);
             } else {
+                this.initialized = true;
                 callback(err, connection);
             }
         }.bind(this));
