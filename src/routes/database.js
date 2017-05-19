@@ -1,11 +1,13 @@
 var response = require('./response.js'),
     databaseAPI = require('./../api/database.js'),
     pools = require('./../pools.js'),
-    usersAPI = require('./../api/users.js');
+    usersAPI = require('./../api/users.js'),
+    _ = require('underscore');
 
 var database = {
     get: function(req, res, next) {
         var sql_role = req.user.sql_role;
+        var username = req.user.username;
 
         pools.getMaster().getConnection().then(function(connection) {
             connection.query(
@@ -19,6 +21,11 @@ var database = {
                     if(err) {
                         return next(err);
                     }
+
+                    rows = _.map(rows, function(row) {
+                        row.Db = row.Db.replace(username + '_', '');
+                        return row;
+                    })
 
                     res.json(response.format(rows));
                 }
