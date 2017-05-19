@@ -27,7 +27,7 @@ app.all('/*', function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     // Set custom headers for CORS
-    res.header('Access-Control-Allow-Headers', 'Content-type,X-Access-Token');
+    res.header('Access-Control-Allow-Headers', 'Content-type,X-Access-Token,X-Database-Name');
     if (req.method == 'OPTIONS') {
         res.status(200).end();
     } else {
@@ -45,6 +45,11 @@ app.use(function(req, res, next) {
     // If the X-Access-Token is empty or different than
     // the secret token
     if(req.headers['x-access-token'] != config.secretToken) {
+        var databaseName = req.headers['x-database-name'];
+        if(!databaseName) {
+            return next(new Error('You must specify a database name using the header X-Database-Name.'))
+        }
+
         // Search for user
         var token = req.headers['x-access-token'];
         users.getForToken(token).then(function(userData) {
@@ -52,7 +57,7 @@ app.use(function(req, res, next) {
             req.master = false;
 
             // Assign pool to the request
-            req.pool = pools.getForToken(token);
+            req.pool = pools.getForToken(token, databaseName);
             next();
         }, function() {
             next(new Error('Unauthorized Access'));

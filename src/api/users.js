@@ -47,6 +47,27 @@ module.exports = function(userName, password, _pool) {
         });
     }
 
+    this.removeAcessTo = function(databaseName) {
+        return new Promise(function(resolve, reject) {
+            pool.getConnection().then(function(connection) {
+                logger('Removing user permission ' + userName + ' to ' + databaseName);
+                connection.query(
+                    'DELETE FROM mysql.db WHERE Db=\'' + databaseName + '\' AND User=\'' + userName + '\';',
+                    [],
+                    function(err, result) {
+                        connection.release();
+
+                        if(err) {
+                            return reject(err);
+                        }
+
+                        resolve(err);
+                    }
+                )
+            }, reject);
+        });
+    }
+
     this.flush = function() {
         return new Promise(function(resolve, reject) {
             pool.getConnection().then(function(connection) {

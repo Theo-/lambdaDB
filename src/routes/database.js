@@ -26,12 +26,20 @@ var database = {
         }, next);
     },
 
-    getForUser: function(req, res, next) {
+    drop: function(req, res, next) {
+        var dbName = req.user.username + '_' + req.params.database;
+        var database = databaseAPI(dbName);
+        var sql_user = usersAPI(req.user.sql_role);
 
+        database.drop().then(function() {
+            sql_user.removeAcessTo(dbName);
+        }).then(function() {
+            res.json(response.format({}));
+        }).catch(next);
     },
 
     create: function(req, res, next) {
-        var dbName = req.body.name;
+        var dbName = req.user.username + '_' + req.body.name;
         var sql_user = usersAPI(req.user.sql_role);
         var db = databaseAPI(dbName);
 

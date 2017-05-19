@@ -46,6 +46,26 @@ module.exports = function(databaseName, _pool) {
         });
     }
 
+    /**
+     * Destroys the database
+     */
+    this.drop = function() {
+        return new Promise(function(resolve, reject) {
+            pool.getConnection().then(function(connection) {
+                connection.query(
+                    'DROP DATABASE IF EXISTS ' + databaseName, [], 
+                    function(err, result) {
+                        connection.release();
+                        if(err) {
+                            return reject(err);
+                        } 
+                        resolve(result);
+                    }
+                )
+            }, reject)
+        });
+    }
+
     this.getTable = function(name) {
         return table(databaseName + '.' + name, pool);
     }

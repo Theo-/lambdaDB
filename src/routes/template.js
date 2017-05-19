@@ -5,6 +5,7 @@ var templateEngine = require('./../template/templateEngine.js'),
 var Template = {
     parse: function(req, res, next) {
         var template = req.body.template;
+        template.name = req.user.username + '_' + template.name;
         var sqlUser = usersAPI(req.user.sql_role);
 
         templateEngine.parse(template).then(function() {

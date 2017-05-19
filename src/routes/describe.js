@@ -3,7 +3,7 @@ var response = require('./response.js');
 module.exports = {
     table: function(req, res, next) {
         var tableName = req.params.table;
-        var databaseName = req.params.database;
+        var databaseName = req.user.username + '_' + req.params.database;
 
         if(!!databaseName) {
             tableName = databaseName + '.' + tableName;

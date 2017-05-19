@@ -1,6 +1,7 @@
 var dbConnection = require('./db.js'),
     configParser = require('./configParser.js'),
-    users = require('./users.js');
+    users = require('./users.js'),
+    logger = require('./logger.js');
 
 var masterConfig = configParser();
 
@@ -28,26 +29,34 @@ var Pools = {
         return Pools.pools['config'];
     },  
 
-    getForToken: function(secretToken) {
+    getForToken: function(secretToken, databaseName) {
         if(secretToken == masterConfig.secretToken) {
             return Pools.getMaster();
         }
 
-        if(!Pools.pools[secretToken]) {
+        if(!users.cache[secretToken]) {
+            throw new Error('Secret token not registered');
+        }
+        var user = users.cache[secretToken];
+        databaseName = user.username + '_' + databaseName;
+        var key = secretToken + '.' + databaseName;
+
+        if(!Pools.pools[key]) {
             if(!!users.cache[secretToken]) {
+                logger('Creating pool for '+key);
                 var user = users.cache[secretToken];
                 var basicConfig = configParser();
                 basicConfig.user = user.sql_role;
                 basicConfig.password = user.sql_password;
-                basicConfig.database = 'lr_theo';
+                basicConfig.database = databaseName;
                 var userPool = new dbConnection(basicConfig);
-                Pools.pools[secretToken] = userPool;
+                Pools.pools[key] = userPool;
             } else {
-                throw new Error('Pool does not exist for this key');
+                throw new Error('Pool does not exist for the key ' + key);
             }
         }
 
-        return Pools.pools[secretToken];
+        return Pools.pools[key];
     }
 };
 
