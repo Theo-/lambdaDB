@@ -74,7 +74,7 @@ app.use('/db/*', function(req, res, next) {
     users.getForToken(secretToken).then(function(userData) {
         req.user = userData;
         req.master = false;
-        req.trueDatabaseName = req.user + '_' + databaseName;
+        req.trueDatabaseName = req.user.username + '_' + databaseName;
 
         // Assign pool to the request
         req.pool = pools.getForToken(secretToken, databaseName);
