@@ -37,10 +37,16 @@ var database = {
         var dbName = req.trueDatabaseName;
         var database = databaseAPI(dbName);
         var sql_user = usersAPI(req.user.sql_role);
-
+        
+        /*
         database.drop().then(function() {
             sql_user.removeAcessTo(dbName);
         }).then(function() {
+            res.json(response.format({}));
+        }).catch(next);
+        */
+
+        sql_user.removeAcessTo(dbName).then(function() {
             res.json(response.format({}));
         }).catch(next);
     },
