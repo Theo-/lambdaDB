@@ -84,7 +84,14 @@ function checkDatabase(req, res, next) {
     })
 }
 app.use('/db*', checkDatabase);
-app.use('/', checkDatabase);
+app.use('/', function(req, res, next) {
+    // If db request
+    if(req.originalUrl == '/') {
+        checkDatabase(req, res, next);
+    } else {
+        next();
+    }
+});
 
 // API routes for master access
 app.use(function(req, res, next) {
