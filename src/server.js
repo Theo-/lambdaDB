@@ -59,7 +59,7 @@ app.use('/me*', function(req, res, next) {
  * Database access for a certain user.
  * X-Database-Name must be specified here.
  */
-app.use('/db*', function(req, res, next) {
+function checkDatabase(req, res, next) {
     var secretToken = req.headers['x-access-token'];
     var databaseName = req.headers['x-database-name'];
     if(!secretToken) {
@@ -82,7 +82,9 @@ app.use('/db*', function(req, res, next) {
     }, function() {
         next(new Error('Unauthorized Access'));
     })
-});
+}
+app.use('/db*', checkDatabase);
+app.use('/', checkDatabase);
 
 // API routes for master access
 app.use(function(req, res, next) {
